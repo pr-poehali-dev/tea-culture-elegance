@@ -3,8 +3,11 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import Icon from '@/components/ui/icon';
+import CartDrawer from '@/components/CartDrawer';
+import { useCartContext } from '@/context/CartContext';
 
 const Index = () => {
+  const { addToCart, getTotalItems } = useCartContext();
   const teaProducts = [
     {
       id: 1,
@@ -111,14 +114,21 @@ const Index = () => {
             </div>
             <nav className="hidden md:flex items-center space-x-8">
               <a href="#" className="text-tea-600 hover:text-sage-400 font-medium transition-colors">О нас</a>
-              <a href="#" className="text-tea-600 hover:text-sage-400 font-medium transition-colors">Чай</a>
-              <a href="#" className="text-tea-600 hover:text-sage-400 font-medium transition-colors">Чайники</a>
+              <a href="/tea" className="text-tea-600 hover:text-sage-400 font-medium transition-colors">Чай</a>
+              <a href="/teapots" className="text-tea-600 hover:text-sage-400 font-medium transition-colors">Чайники</a>
               <a href="#" className="text-tea-600 hover:text-sage-400 font-medium transition-colors">Блог</a>
               <a href="#" className="text-tea-600 hover:text-sage-400 font-medium transition-colors">Контакты</a>
-              <Button variant="outline" size="sm">
-                <Icon name="ShoppingCart" size={16} />
-                <span className="ml-2">Корзина</span>
-              </Button>
+              <CartDrawer>
+                <Button variant="outline" size="sm" className="relative">
+                  <Icon name="ShoppingCart" size={16} />
+                  <span className="ml-2">Корзина</span>
+                  {getTotalItems() > 0 && (
+                    <Badge className="absolute -top-2 -right-2 h-5 w-5 flex items-center justify-center p-0 bg-sage-400 text-white text-xs">
+                      {getTotalItems()}
+                    </Badge>
+                  )}
+                </Button>
+              </CartDrawer>
             </nav>
             <Button variant="ghost" className="md:hidden">
               <Icon name="Menu" size={24} />
@@ -140,14 +150,18 @@ const Index = () => {
                 Премиальные сорта чая и чайники ручной работы от мастеров своего дела.
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
-                <Button className="bg-sage-400 hover:bg-sage-500 text-white px-8 py-6 text-lg">
-                  <Icon name="Leaf" size={20} />
-                  <span className="ml-2">Выбрать чай</span>
-                </Button>
-                <Button variant="outline" className="border-tea-300 text-tea-700 hover:bg-tea-50 px-8 py-6 text-lg">
-                  <Icon name="Coffee" size={20} />
-                  <span className="ml-2">Чайники</span>
-                </Button>
+                <a href="/tea">
+                  <Button className="bg-sage-400 hover:bg-sage-500 text-white px-8 py-6 text-lg">
+                    <Icon name="Leaf" size={20} />
+                    <span className="ml-2">Выбрать чай</span>
+                  </Button>
+                </a>
+                <a href="/teapots">
+                  <Button variant="outline" className="border-tea-300 text-tea-700 hover:bg-tea-50 px-8 py-6 text-lg">
+                    <Icon name="Coffee" size={20} />
+                    <span className="ml-2">Чайники</span>
+                  </Button>
+                </a>
               </div>
             </div>
             <div className="relative animate-scale-in">
@@ -208,7 +222,17 @@ const Index = () => {
                   </CardDescription>
                   <div className="flex items-center justify-between">
                     <span className="text-2xl font-bold text-tea-800">{product.price}</span>
-                    <Button size="sm" className="bg-sage-400 hover:bg-sage-500">
+                    <Button 
+                      size="sm" 
+                      className="bg-sage-400 hover:bg-sage-500"
+                      onClick={() => addToCart({
+                        id: product.id,
+                        name: product.name,
+                        price: product.price,
+                        image: product.image,
+                        category: product.category
+                      })}
+                    >
                       <Icon name="Plus" size={16} />
                       <span className="ml-1">В корзину</span>
                     </Button>
@@ -218,10 +242,12 @@ const Index = () => {
             ))}
           </div>
           <div className="text-center mt-12">
-            <Button variant="outline" className="border-sage-400 text-sage-600 hover:bg-sage-50 px-8 py-3">
-              Посмотреть все сорта чая
-              <Icon name="ArrowRight" size={16} className="ml-2" />
-            </Button>
+            <a href="/tea">
+              <Button variant="outline" className="border-sage-400 text-sage-600 hover:bg-sage-50 px-8 py-3">
+                Посмотреть все сорта чая
+                <Icon name="ArrowRight" size={16} className="ml-2" />
+              </Button>
+            </a>
           </div>
         </div>
       </section>
@@ -262,7 +288,17 @@ const Index = () => {
                   </CardDescription>
                   <div className="flex items-center justify-between">
                     <span className="text-2xl font-bold text-tea-800">{product.price}</span>
-                    <Button size="sm" className="bg-tea-500 hover:bg-tea-600">
+                    <Button 
+                      size="sm" 
+                      className="bg-tea-500 hover:bg-tea-600"
+                      onClick={() => addToCart({
+                        id: product.id,
+                        name: product.name,
+                        price: product.price,
+                        image: product.image,
+                        category: product.category
+                      })}
+                    >
                       <Icon name="Plus" size={16} />
                       <span className="ml-1">В корзину</span>
                     </Button>
@@ -272,10 +308,12 @@ const Index = () => {
             ))}
           </div>
           <div className="text-center mt-12">
-            <Button variant="outline" className="border-tea-500 text-tea-600 hover:bg-tea-50 px-8 py-3">
-              Посмотреть все чайники
-              <Icon name="ArrowRight" size={16} className="ml-2" />
-            </Button>
+            <a href="/teapots">
+              <Button variant="outline" className="border-tea-500 text-tea-600 hover:bg-tea-50 px-8 py-3">
+                Посмотреть все чайники
+                <Icon name="ArrowRight" size={16} className="ml-2" />
+              </Button>
+            </a>
           </div>
         </div>
       </section>
