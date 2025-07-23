@@ -8,6 +8,7 @@ import { CartProvider } from "@/context/CartContext";
 import Index from "./pages/Index";
 import TeaCatalog from "./pages/TeaCatalog";
 import TeapotsCatalog from "./pages/TeapotsCatalog";
+import ProductDetail from "./pages/ProductDetail";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -23,6 +24,7 @@ const App = () => (
             <Route path="/" element={<Index />} />
             <Route path="/tea" element={<TeaCatalog />} />
             <Route path="/teapots" element={<TeapotsCatalog />} />
+            <Route path="/product/:id" element={<ProductDetail />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
